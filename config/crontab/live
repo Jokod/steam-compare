@@ -1,0 +1,1 @@
+#0 5 * * * root (echo "\n----------" && date && echo "----------" && bash /WEB_FOLDER/bin/console.sh COMMAND) >> /WEB_FOLDER/var/log/COMMAND.cron.log

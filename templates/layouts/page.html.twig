@@ -1,0 +1,16 @@
+{% extends "layouts/base.html.twig" %}
+
+{% block header %}
+    {% include '_partials/header.html.twig' %}
+{% endblock %}
+
+{% block body %}
+    {{ parent() }}
+    
+    {% block page %}{% endblock %}
+
+{% endblock %}
+
+{% block footer %}
+    {% include '_partials/footer.html.twig' %}
+{% endblock %}

@@ -1,0 +1,5 @@
+@each $size, $length in $border-sizes {
+  .border-#{$size} {
+    border-width: $length !important;
+  }
+}

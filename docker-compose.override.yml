@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+    db:
+        environment:
+            - MYSQL_ROOT_PASSWORD=password
+            - MYSQL_DATABASE=web
+
+    phpmyadmin:
+        container_name: web-phpmyadmin
+        image: phpmyadmin/phpmyadmin
+        ports:
+            - 7344:80
+        depends_on:
+            - db
+        environment:
+            - PMA_HOST=db
+            - PMA_USER=root
+            - PMA_PASSWORD=password
+
+    mailer:
+        image: schickling/mailcatcher
+        ports: [1025, 1080]

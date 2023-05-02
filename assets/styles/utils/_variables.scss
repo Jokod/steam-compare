@@ -1,0 +1,88 @@
+/*! Breakpoints */
+$breakpoints: (
+    "mobile":         480px,
+    "mobile-wide":    640px,
+    "tablet":         768px,
+    "tablet-wide":    1024px,
+    "desktop":        1240px,
+    "wide-desktop":   1440px
+);
+
+$container-margin: 3rem;
+
+// Colors
+$white:    #fff;
+$gray-100: #f8f9fc;
+$gray-200: #eaecf4;
+$gray-300: #dddfeb;
+$gray-400: #d1d3e2;
+$gray-500: #b7b9cc;
+$gray-600: #858796;
+$gray-700: #706A6B;
+$gray-800: #5a5c69;
+$gray-900: #3a3b45;
+$black:    #000;
+
+// $primary:   #EA547E;
+// $secondary: #3CB39F;
+$success:   #71D875;
+$warning:   #FF9800;
+$danger:    #FF5274;
+$light:     $gray-200;
+$dark:      $gray-700;
+
+$indigo:  #6610f2;
+$purple:  #6f42c1;
+$pink:    #EA547E;
+$red:     #d43916;
+$orange:  #fe8600;
+$yellow:  #FECB00;
+$green:   #3CB39F;
+$brown:   #2d0a09;
+$blue:    #0275A3;
+$teal:    #20c9a6;
+$cyan:    #36b9cc;
+$cyan-90: #009AD8;
+
+/*! Fonts */
+// @mixin fontMontserrat($size: 1rem, $color: $black, $weight: 400, $lineHeight: 2rem) {
+//   font-family: 'Montserrat', Helvetica, Arial, sans-serif;
+//   font-size: $size;
+//   color: $color;
+//   font-weight: $weight;
+//   line-height: $lineHeight;
+// }
+
+// Borders
+$border-radius: 0.35rem;
+$border-color: darken($gray-200, 2%);
+
+$border-sizes: (
+  1: 0.1rem,
+  2: 0.25rem,
+  3: 0.5rem,
+  4: 1rem,
+  5: 2rem
+);
+
+// Tables
+$table-cell-padding:          .5rem;
+//$table-cell-padding-sm:       .3rem !default;
+//$table-color:                 $body-color !default;
+$table-bg:                    $white;
+$table-accent-bg:             rgba($black, .05);
+//$table-hover-color:           $table-color !default;
+// $table-hover-bg:              rgba($primary, .075);
+//$table-active-bg:             $table-hover-bg !default;
+//$table-border-width:          1;
+//$table-border-color:          $border-color !default;
+$table-head-bg:               $gray-100;
+$table-head-color:            $gray-800;
+$table-striped-order:         odd !default;
+//$table-bg-level:              -9 !default;
+//$table-border-level:          -6 !default;
+
+/*! Easing */
+$ease-out-circ: cubic-bezier(0.075, 0.82, 0.165, 1);
+$ease-out-quart: cubic-bezier(0.165, 0.84, 0.44, 1);
+$ease-out-cubic: cubic-bezier(0.215, 0.61, 0.355, 1);

@@ -1,0 +1,38 @@
+{% extends 'security/base.html.twig' %}
+
+{% block title %}Connexion{% endblock %}
+
+{% block container %}
+
+    <div class="container w-25">
+        <div>    
+            <form method="post">
+                {% if error %}
+                    <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                {% endif %}
+
+                <label for="inputUsername">Votre adresse mail</label>
+                <input type="email" value="{{ last_username }}" name="username" id="inputUsername" class="form-control" autocomplete="username" required autofocus>
+                <label for="inputPassword">Votre mot de passe</label>
+                <input type="password" name="password" id="inputPassword" class="form-control" placeholder="*********" autocomplete="current-password" required>
+
+                <input type="hidden" name="_csrf_token"
+                    value="{{ csrf_token('authenticate') }}"
+                >
+
+                <div class="checkbox mb-3">
+                    <label>
+                        <input type="checkbox" name="_remember_me"> Se souvenir de moi
+                    </label>
+                </div>
+
+                <button class="btn btn-primary" type="submit">
+                    Connexion
+                </button>
+
+                <a href="{{ path('forgot_password_request') }}" class="login__wrapper__form__forget small">J'ai oublié mon mot de passe</a>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}

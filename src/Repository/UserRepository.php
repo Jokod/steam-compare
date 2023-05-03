@@ -2,7 +2,9 @@
 
 namespace App\Repository;
 
+use App\Entity\SteamClient\SteamUser;
 use App\Entity\User;
+use App\Hydrator\HydratorInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -16,7 +18,7 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class UserRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry, private HydratorInterface $hydrator)
     {
         parent::__construct($registry, User::class);
     }
@@ -39,16 +41,12 @@ class UserRepository extends ServiceEntityRepository
         }
     }
 
-    public function findOrCreateUser(string $steamId): User
+    public function findOrCreateUser(SteamUser $steamUser): User
     {
-        $user = $this->findOneBy(['steamId' => $steamId]);
+        $user = $this->findOneBy(['steamId' => $steamUser->getSteamId()]);
 
         if (!$user) {
-            $user = new User();
-            $user->setSteamId($steamId)
-                ->setPassword('')
-                ->setCreatedAt(new \DateTimeImmutable())
-            ;
+            $user = $this->hydrator->hydrate($steamUser);
 
             $this->add($user, true);
         }

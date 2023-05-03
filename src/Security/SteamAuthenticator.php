@@ -43,7 +43,9 @@ class SteamAuthenticator extends AbstractAuthenticator
         $this->credentials = $request->query->get('credential');
 
         $badge = new UserBadge('steamId', function () {
-            return $this->userRepository->findOrCreateUser($this->credentials);
+            $userSteam = $this->steamClient->getUserInfo($this->credentials);
+
+            return $this->userRepository->findOrCreateUser($userSteam);
         });
 
         return new SelfValidatingPassport($badge);

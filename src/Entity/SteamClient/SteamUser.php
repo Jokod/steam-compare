@@ -1,157 +1,43 @@
 <?php
 
-namespace App\Entity;
+namespace App\Entity\SteamClient;
 
-use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\UserInterface;
-
-#[ORM\Entity(repositoryClass: 'App\Repository\UserRepository')]
-class User implements UserInterface
+class SteamUser
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue()]
-    #[ORM\Column(type: 'integer', length: 64)]
-    private $id;
-
-    #[ORM\Column(type: 'string', length: 180, unique: true)]
     private $steamId;
 
-    #[ORM\Column(type: 'integer')]
     private $communityVisibilityState;
 
-    #[ORM\Column(type: 'integer', nullable: true)]
     private $profileState;
 
-    #[ORM\Column(type: 'string')]
     private $personaName;
 
-    #[ORM\Column(type: 'integer')]
     private $lastLogoff;
 
-    #[ORM\Column(type: 'string')]
     private $profileUrl;
 
-    #[ORM\Column(type: 'string')]
     private $avatar;
 
-    #[ORM\Column(type: 'string')]
     private $avatarMedium;
 
-    #[ORM\Column(type: 'string')]
     private $avatarFull;
 
-    #[ORM\Column(type: 'integer')]
     private $personaState;
 
-    #[ORM\Column(type: 'string')]
     private $primaryClanId;
 
-    #[ORM\Column(type: 'integer')]
     private $timeCreated;
 
-    #[ORM\Column(type: 'integer')]
     private $personaStateFlags;
 
-    #[ORM\Column(type: 'json')]
-    private $roles = [];
-
-    #[ORM\Column(type: 'string')]
-    private $password;
-
-    #[ORM\Column]
-    private \DateTimeImmutable $createdAt;
-
-    public function getId(): ?int
+    public function getSteamId(): ?string
     {
-        return $this->id;
-    }
-
-    public function setId(int $id): self
-    {
-        $this->id = $id;
-
-        return $this;
+        return $this->steamId;
     }
 
     public function setSteamId(string $steamId): self
     {
         $this->steamId = $steamId;
-
-        return $this;
-    }
-
-    public function getSteamId(): string
-    {
-        return (string) $this->steamId;
-    }
-
-    public function getUsername(): string
-    {
-        return $this->getSteamId();
-    }
-
-    /**
-     * @see UserInterface
-     */
-    public function getRoles(): array
-    {
-        $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
-
-        return array_unique($roles);
-    }
-
-    public function setRoles(array $roles): self
-    {
-        $this->roles = $roles;
-
-        return $this;
-    }
-
-    /**
-     * @see PasswordAuthenticatedUserInterface
-     */
-    public function getPassword(): string
-    {
-        return $this->password;
-    }
-
-    public function setPassword(string $password): self
-    {
-        $this->password = $password;
-
-        return $this;
-    }
-
-    /**
-     * Returning a salt is only needed, if you are not using a modern
-     * hashing algorithm (e.g. bcrypt or sodium) in your security.yaml.
-     *
-     * @see UserInterface
-     */
-    public function getSalt(): ?string
-    {
-        return null;
-    }
-
-    /**
-     * @see UserInterface
-     */
-    public function eraseCredentials()
-    {
-        // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
-    }
-
-    public function getCreatedAt(): \DateTimeImmutable
-    {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(\DateTimeImmutable $createdAt): self
-    {
-        $this->createdAt = $createdAt;
 
         return $this;
     }
@@ -257,7 +143,7 @@ class User implements UserInterface
         return $this->personaState;
     }
 
-    public function setPersonaState(?int $personaState): self
+    public function setPersonaState(int $personaState): self
     {
         $this->personaState = $personaState;
 

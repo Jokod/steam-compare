@@ -18,6 +18,7 @@
 @import "components/_buttons";
 
 /*! Layout */
+@import "layout/_footer";
 
 /*! Pages */
 @import "pages/_error";
@@ -26,6 +27,7 @@
     @include baseText();
 
     background-color: $blue;
+    color: $white;
 
     position: relative;
     display: flex;

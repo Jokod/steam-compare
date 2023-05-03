@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Mailer\Mailer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 abstract class BaseController extends AbstractController
@@ -11,13 +10,13 @@ abstract class BaseController extends AbstractController
     {
         $subscribedServices = parent::getSubscribedServices();
 
-        $subscribedServices['app.mailer'] = Mailer::class;
+        // $subscribedServices['app.mailer'] = Mailer::class;
 
         return $subscribedServices;
     }
 
-    protected function getMailer(): Mailer
-    {
-        return $this->container->get('app.mailer');
-    }
+    // protected function getMailer(): Mailer
+    // {
+    //     return $this->container->get('app.mailer');
+    // }
 }

@@ -15,13 +15,17 @@
 /*! Components */
 @import "components/_border";
 @import "components/_text";
+@import "components/_buttons";
 
 /*! Layout */
 
 /*! Pages */
+@import "pages/_error";
 
 .layout {
     @include baseText();
+
+    background-color: $blue;
 
     position: relative;
     display: flex;

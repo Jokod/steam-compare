@@ -1,0 +1,18 @@
+{% extends 'layouts/base.html.twig' %}
+
+{% block title %}Erreur 500{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+
+      <section class="section error min-vh-100 d-flex flex-column align-items-center justify-content-center">
+        <h1>500</h1>
+        <h2 class="text-center">le serveur a rencontré un problème inattendu.</h2>
+        <a class="btn btn-black" href="{{ path('dashboard') }}">Retour à la page d'accueil</a>
+        {# <img src="{{ asset('build/images/not-found.svg') }}" class="img-fluid pt-5" alt="Page non trouvée"> #}
+      </section>
+
+    </div>
+
+{% endblock %}

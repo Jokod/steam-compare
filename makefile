@@ -19,7 +19,7 @@ PHP_CS_FIXER  = $(PHP) ./vendor/bin/php-cs-fixer
 
 # Variables
 APP_INSTANCE  = live
-DOMAIN		  = web
+DOMAIN		  = steam
 
 # Misc
 .DEFAULT_GOAL = help
@@ -48,9 +48,7 @@ status:
 
 info:
 	@echo ============================================================================
-	@echo PhpMyAdmin UI - Manage/View MySql datas     :     http://127.0.0.1:6244
-	@echo ----------------------------------------------------------------------------
-	@echo Mailhog UI    - Email smtp for tests        :     http://127.0.0.1:6246
+	@echo PhpMyAdmin UI - Manage/View MySql datas     :     http://127.0.0.1:7344
 	@echo ----------------------------------------------------------------------------
 	@echo WEB UI        - Application local domain    :     https://$(DOMAIN).wip
 	@echo ============================================================================

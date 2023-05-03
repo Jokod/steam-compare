@@ -29,61 +29,86 @@ class SteamClient
 
     /**
      * Renvoie les information de l'utilisateur.
+     *
+     * @return SteamUser[] $users
      */
-    public function getUserInfo(string $steamId): SteamUser
+    public function getUserInfo(array|string $steamIds): array
     {
-        $url = self::STEAMAPI_BASE . '/ISteamUser/GetPlayerSummaries/v2/?key=' . $this->apiKey . '&steamids=' . $steamId;
+        if (\is_array($steamIds)) {
+            $steamIds = implode(',', $steamIds);
+        }
 
-        $response  = $this->request($url);
-        $userInfos = $response['response']['players'][0];
+        try {
+            $url      = self::STEAMAPI_BASE . '/ISteamUser/GetPlayerSummaries/v2/?key=' . $this->apiKey . '&steamids=' . $steamIds;
+            $response = $this->request($url);
 
-        $steamUser = new SteamUser();
-        $steamUser->setSteamId($userInfos['steamid']);
-        $steamUser->setCommunityVisibilityState($userInfos['communityvisibilitystate']);
-        $steamUser->setProfileState($userInfos['profilestate']);
-        $steamUser->setPersonaState($userInfos['personastate']);
-        $steamUser->setPersonaName($userInfos['personaname']);
-        $steamUser->setLastLogoff($userInfos['lastlogoff']);
-        $steamUser->setProfileUrl($userInfos['profileurl']);
-        $steamUser->setAvatar($userInfos['avatar']);
-        $steamUser->setAvatarMedium($userInfos['avatarmedium']);
-        $steamUser->setAvatarFull($userInfos['avatarfull']);
-        $steamUser->setPersonaState($userInfos['personastate']);
-        $steamUser->setPrimaryClanId($userInfos['primaryclanid']);
-        $steamUser->setTimeCreated($userInfos['timecreated']);
-        $steamUser->setPersonaStateFlags($userInfos['personastateflags']);
+            $users = [];
+            foreach ($response['response']['players'] as $userInfos) {
+                $steamUser = new SteamUser();
+                $steamUser->setSteamId($userInfos['steamid']);
+                $steamUser->setCommunityVisibilityState($userInfos['communityvisibilitystate']);
+                $steamUser->setProfileState($userInfos['profilestate']);
+                $steamUser->setPersonaState($userInfos['personastate']);
+                $steamUser->setPersonaName($userInfos['personaname']);
+                $steamUser->setLastLogoff($userInfos['lastlogoff']);
+                $steamUser->setProfileUrl($userInfos['profileurl']);
+                $steamUser->setAvatar($userInfos['avatar']);
+                $steamUser->setAvatarMedium($userInfos['avatarmedium']);
+                $steamUser->setAvatarFull($userInfos['avatarfull']);
+                $steamUser->setPersonaState($userInfos['personastate']);
+                $steamUser->setPrimaryClanId($userInfos['primaryclanid']);
+                $steamUser->setTimeCreated($userInfos['timecreated']);
+                $steamUser->setPersonaStateFlags($userInfos['personastateflags']);
 
-        return $steamUser;
+                $users[] = $steamUser;
+            }
+
+            return $users;
+        } catch (\Exception $e) {
+            throw new \Exception('Impossible de récupérer les informations du/des joueur(s).');
+        }
     }
 
     /**
      * Renvoie les jeux de l'utilisateur.
      */
-    public function getUserGames(string $steamId, bool $free, bool $infos): array
+    public function getUserGames(string $steamId, bool $free, bool $infos): null|array
     {
-        $url = self::STEAMAPI_BASE . '/IPlayerService/GetOwnedGames/v1/?key=' . $this->apiKey . '&steamid=' . $steamId . '&include_played_free_games=' . (int) $free . '&include_appinfo=' . (int) $infos;
+        try {
+            $url = self::STEAMAPI_BASE . '/IPlayerService/GetOwnedGames/v1/?key=' . $this->apiKey . '&steamid=' . $steamId . '&include_played_free_games=' . (int) $free . '&include_appinfo=' . (int) $infos;
 
-        return $this->request($url);
+            return $this->request($url);
+        } catch (\Exception $e) {
+            return null;
+        }
     }
 
     /**
      * Renvoie les amis de l'utilisateur.
      */
-    public function getUserFriends(string $steamId): array
+    public function getUserFriends(string $steamId): null|array
     {
-        $url = self::STEAMAPI_BASE . '/ISteamUser/GetFriendList/v1/?key=' . $this->apiKey . '&steamid=' . $steamId . '&relationship=friend';
+        try {
+            $url = self::STEAMAPI_BASE . '/ISteamUser/GetFriendList/v1/?key=' . $this->apiKey . '&steamid=' . $steamId . '&relationship=friend';
 
-        return $this->request($url);
+            return $this->request($url);
+        } catch (\Exception $e) {
+            return null;
+        }
     }
 
     /**
      * Renvoie les groupes de l'utilisateur.
      */
-    public function getUserGroups(string $steamId): array
+    public function getUserGroups(string $steamId): null|array
     {
-        $url = self::STEAMAPI_BASE . '/ISteamUser/GetUserGroupList/v1/?key=' . $this->apiKey . '&steamid=' . $steamId;
+        try {
+            $url = self::STEAMAPI_BASE . '/ISteamUser/GetUserGroupList/v1/?key=' . $this->apiKey . '&steamid=' . $steamId;
 
-        return $this->request($url);
+            return $this->request($url);
+        } catch (\Exception $e) {
+            return null;
+        }
     }
 
     /**
@@ -111,13 +136,8 @@ class SteamClient
      */
     public function request(string $url): array
     {
-        try {
-            $response = $this->httpClient->request('GET', $url);
+        $response = $this->httpClient->request('GET', $url);
 
-            return json_decode($response->getContent(), true);
-        } catch (\Exception $e) {
-            $this->logger->error('Steam API Error: ' . $e->getMessage());
-            throw new \Exception('Steam API Error: ' . $e->getMessage());
-        }
+        return json_decode($response->getContent(), true);
     }
 }

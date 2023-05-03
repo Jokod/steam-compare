@@ -87,7 +87,7 @@ class User implements UserInterface
 
     public function getUsername(): string
     {
-        return $this->getSteamId();
+        return $this->getPersonaName();
     }
 
     /**

@@ -1,12 +1,27 @@
 {% extends "layouts/base.html.twig" %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('vue') }}
+{% endblock %}
+
 {% block header %}
     {% include '_partials/header.html.twig' %}
 {% endblock %}
 
 {% block body %}
     {{ parent() }}
+    <toast></toast>
 
     {% block page %}{% endblock %}
 
+    {% block footer %}
+        {% include '_partials/footer.html.twig' %}
+    {% endblock %}
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('vue') }}
 {% endblock %}

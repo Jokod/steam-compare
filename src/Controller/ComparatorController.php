@@ -17,15 +17,32 @@ class ComparatorController extends BaseController
     {
     }
 
-    #[Route('/user/load/{steamId}', name: 'user_load')]
+    #[Route('/user/load/{steamId}', name: 'user_load', options: ['expose' => true])]
     public function index(Request $request, SteamClient $steamClient, int $steamId): JsonResponse
     {
         try {
             $datas = json_decode($request->getContent(), true);
 
+            $userInfos   = $steamClient->getUserInfo($steamId)[0];
+            $userGames   = $steamClient->getUserGames($steamId, $datas['free'], $datas['appInfos']);
+            $userFriends = $steamClient->getUserFriends($steamId)['friendslist']['friends'] ?? null;
+
+            if ($userFriends) {
+                $userFriendsSteamIds = array_column($userFriends, 'steamid');
+                $userFriends         = $steamClient->getUserInfo($userFriendsSteamIds);
+            }
+
+            usort($userFriends, function ($a, $b) {
+                return strcmp($a->getPersonaName(), $b->getPersonaName());
+            });
+
+            $userFriends = \array_slice($userFriends, 0, 100);
+
             return $this->json([
-                'userInfos' => $steamClient->getUserInfo($steamId),
-                'userGames' => $steamClient->getUserGames($steamId, $datas->free, $datas->appInfos),
+                'infos'      => $userInfos,
+                'friends'    => $userFriends,
+                'game_count' => $userGames['response']['game_count'],
+                'games'      => $userGames['response']['games'],
             ]);
         } catch (\Exception $e) {
             return $this->json(['code' => 'error', 'message' => $e->getMessage()], Response::HTTP_BAD_REQUEST);

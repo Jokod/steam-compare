@@ -13,7 +13,7 @@ export default {
         makeToast(title, message, code) {
             this.$toasted.show(message, {
                 theme: "toasted-primary", 
-                position: "bottom-left", 
+                position: "bottom-right", 
                 duration : 5000,
                 type: code,
                 name: title,

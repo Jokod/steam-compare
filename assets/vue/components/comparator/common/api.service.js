@@ -2,10 +2,10 @@ import axios from "axios";
 import Routing from '../../../../js/components/Routing';
 
 const ApiService = {
-  load() {
-    let url = Routing.generate('calendar_index')
+  getUserInfos(steamId, filters) {
+    let url = Routing.generate('user_load', { steamId: steamId })
 
-    return axios.get(url)
+    return axios.post(url, filters)
   },
 }
 

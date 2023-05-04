@@ -1,6 +1,6 @@
 <template>
     <div>
-
+        {{ game.appid }}
     </div>
 </template>
 

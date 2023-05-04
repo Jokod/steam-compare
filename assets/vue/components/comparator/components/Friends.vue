@@ -4,7 +4,7 @@
         <div class="mt-4">Il semble que vous n'ayez pas d'amis ou que votre liste de contact est en privé.</div>
     </div>
 
-    <div v-else class="d-flex justify-content-center gap-3">
+    <div v-else class="d-flex justify-content-center gap-3 flex-wrap">
         <Friend v-for="(friend, index) in friends" :key="index" :friend="friend" />
     </div>
 </template>
@@ -19,21 +19,9 @@ export default {
     components: {
         Friend,
     },
-    data() {
-        return {
-            status: null,
-        }
-    },
-    methods: {
-        compare() {
-            this.$store.commit('setInteractive', false);
-            this.status = 'loading';
-        }
-    },
     computed: {
         ...mapState({
             friends: state => state.user.friends,
-            interactive: state => state.interactive,
         }),
     },
 }

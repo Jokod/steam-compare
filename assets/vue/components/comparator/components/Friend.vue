@@ -1,11 +1,14 @@
 <template>
-    <img
-        @click="selected"
-        :src="friend.avatarMedium"
-        :alt="friend.personaName"
-        :title="friend.personaName"
-        :class="{'selected' : isSelected, 'interactive': !isInteractive}"
-        >
+    <div class="d-flex flex-column justify-content-center align-items-center">
+        <img class="mb-2"
+            @click="selected"
+            :src="friend.avatarMedium"
+            :alt="friend.personaName"
+            :title="friend.personaName"
+            :class="{'selected' : isSelected, 'interactive': !isInteractive}"
+            >
+        <p>{{ friend.personaName }}</p>
+    </div>
 </template>
 
 <script>
@@ -23,17 +26,20 @@ export default {
     },
     methods: {
         selected() {
-            if (this.interactive)
-                this.$store.commit('friendSelected', this.friend.steamId)
+            if (this.interactive) {
+                this.$store.commit('resetGames');
+                this.$store.commit('addPlayer', this.friend);
+                this.$store.commit('addPlayerToCompare', this.friend.steamId);
+            }
         }
     },
     computed: {
         ...mapState({
-            friendsToCompare: state => state.friendsToCompare,
+            playersToCompare: state => state.playersToCompare,
             interactive: state => state.interactive,
         }),
         isSelected() {
-            return this.friendsToCompare.includes(this.friend.steamId);
+            return this.playersToCompare.some(steamId => steamId === this.friend.steamId);
         },
         isInteractive() {
             return this.interactive;
@@ -48,11 +54,11 @@ img {
 
     &:not(.interactive):hover {
         cursor: pointer;
-        transform: scale(1.2);
+        transform: scale(1.1);
     }
 }
 .selected {
-    transform: scale(1.2);
+    transform: scale(1.1);
     box-shadow: 0 0 0 0.2rem #fff;
 }
 </style>

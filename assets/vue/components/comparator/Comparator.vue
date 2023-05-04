@@ -41,24 +41,21 @@ export default {
         }
     },
     created() {
-        this.$store.commit('setSteamId', this.id);
         this.load();
     },
     methods: {
-        load() {
+        async load() {
             this.status = 'loading';
 
-            this.$store.dispatch('getUserInfos')
-                .then(() => {
-                    this.status = 'loaded';
-                })
-                .catch((e) => {
+            await this.$store.dispatch('getUserInfos', this.id)
+                .then(() => this.status = 'loaded')
+                .catch(() => {
                     this.status = 'error';
 
                     this.$eventBus.$emit('createToast', {
                         title: 'Erreur',
                         message: 'Une erreur est survenue lors du chargement des données, merci de ressayer plus tard.',
-                        code: e.response.data.code
+                        code: 'error'
                     })
                 });
         },

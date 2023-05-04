@@ -116,7 +116,7 @@ class SteamClient
      */
     public function getGameInfo(string $appId): array
     {
-        $url = self::STEAMAPI_BASE . '/ISteamUser/GetUserGroupList/v1/?key=' . $this->apiKey . '&appid=' . $appId;
+        $url = self::STORE_BASE . '/api/appdetails?appids=' . $appId;
 
         return $this->request($url);
     }

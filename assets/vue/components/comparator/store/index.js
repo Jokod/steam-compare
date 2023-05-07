@@ -13,13 +13,31 @@ export default new Vuex.Store({
             interactive: true,
             filters: {
                 free: true,
-                appInfos: false,
+                appInfos: true,
             },
-            games: [],
+            games: {},
+            gamesToCompare: {},
         }
     },
 
     getters: {
+        getGames: state => {
+            const selectedPlayers = state.players.filter(player => state.playersToCompare.includes(player.steamId));
+            if (!selectedPlayers || selectedPlayers.length < 2) {
+                return [];
+            }
+
+            const playersGames = selectedPlayers.map(player => player.games);
+            if (playersGames.some(games => games.length === 0)) {
+                return [];
+            }
+
+            const commonGames = playersGames.reduce((acc, games) => {
+                return acc.filter(game => games.find(g => g.appid === game.appid));
+            }, selectedPlayers[0].games);
+
+            return commonGames;
+        },
     },
 
     mutations: {
@@ -44,10 +62,23 @@ export default new Vuex.Store({
             state.interactive = bool;
         },
         setGames: (state, games) => {
-            state.games = games;
+            Object.keys(games).forEach(appId => {
+                if (!state.games[appId]) {
+                    state.games[appId] = games[appId];
+                }
+            }, {});
         },
-        resetGames: (state) => {
-            state.games = [];
+        setGamesToCompare: (state, appIds) => {
+            const gamesToCompare = {};
+            for (const appId of appIds) {
+                if (state.games[appId]) {
+                    gamesToCompare[appId] = state.games[appId];
+                }
+            }
+            state.gamesToCompare = gamesToCompare;
+        },
+        resetGamesToCompare: (state) => {
+            state.gamesToCompare = {};
         }
     },
 
@@ -66,32 +97,14 @@ export default new Vuex.Store({
                     commit('addPlayerGames', { steamId: steamId, games: response.data });
                 });
         },
-        async getGamesInfos({commit, state}) {
-            const appsIds = state.games.map(game => game.appid);
-            console.log(state.games);
-            await ApiService.getGamesInfos(appsIds)
-                .then((response) => {
-                    commit('setGames', response.data);
-                });
+        async getGamesInfos({commit, state, getters}) {
+            const appIds = getters.getGames.map(game => game.appid)
+            const gameIds = Object.keys(state.games);
+
+            const { data: games } = await ApiService.getGamesInfos(appIds, gameIds);
+
+            commit('setGames', games);
+            commit('setGamesToCompare', appIds);
         },
-        getGames({commit, state}) {
-            const selectedPlayers = state.players.filter(player => state.playersToCompare.includes(player.steamId));
-            if (!selectedPlayers || selectedPlayers.length < 2) {
-                commit('setGames', []);
-                return;
-            }
-
-            const playersGames = selectedPlayers.map(player => player.games);
-            if (playersGames.some(games => games.length === 0)) {
-                commit('setGames', []);
-                return;
-            }
-
-            const commonGames = playersGames.reduce((acc, games) => {
-                return acc.filter(game => games.find(g => g.appid === game.appid));
-            }, selectedPlayers[0].games);
-
-            commit('setGames', commonGames);
-        }
     }
 })

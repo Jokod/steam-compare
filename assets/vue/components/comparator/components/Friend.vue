@@ -27,7 +27,7 @@ export default {
     methods: {
         selected() {
             if (this.interactive) {
-                this.$store.commit('resetGames');
+                this.$store.commit('resetGamesToCompare');
                 this.$store.commit('addPlayer', this.friend);
                 this.$store.commit('addPlayerToCompare', this.friend.steamId);
             }

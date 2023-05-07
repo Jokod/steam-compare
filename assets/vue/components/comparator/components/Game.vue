@@ -1,6 +1,6 @@
 <template>
     <div>
-        {{ game.appid }}
+        {{ appId }}
     </div>
 </template>
 
@@ -8,6 +8,10 @@
 export default {
     name: 'Game',
     props: {
+        appId: {
+            type: String,
+            required: true,
+        },
         game: {
             type: Object,
             required: true,

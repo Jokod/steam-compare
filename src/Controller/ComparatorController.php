@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Exception\InvalidArgumentException;
 use App\Service\SteamClient;
 use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -30,10 +31,7 @@ class ComparatorController extends BaseController
             }
 
             if ($userFriends) {
-                usort($userFriends, function ($a, $b) {
-                    return $a->getPersonaName() <=> $b->getPersonaName();
-                });
-
+                usort($userFriends, fn ($a, $b) => $a->getPersonaName() <=> $b->getPersonaName());
                 $userFriends = \array_slice($userFriends, 0, 100);
             }
 
@@ -50,9 +48,11 @@ class ComparatorController extends BaseController
     public function playerGames(Request $request, SteamClient $steamClient, int $steamId): JsonResponse
     {
         try {
-            $datas = json_decode($request->getContent(), true);
+            $datas    = json_decode($request->getContent(), true);
+            $free     = $datas['free']     ?? true;
+            $appInfos = $datas['appInfos'] ?? false;
 
-            $userGames = $steamClient->getUserGames($steamId, $datas['free'], $datas['appInfos']);
+            $userGames = $steamClient->getUserGames($steamId, $free, $appInfos);
 
             return $this->json($userGames['response']['games']);
         } catch (\Exception $e) {
@@ -63,37 +63,44 @@ class ComparatorController extends BaseController
     #[Route('game/infos/{appId}', name: 'game_infos', options: ['expose' => true])]
     public function appInfos(SteamClient $steamClient, int $appId): JsonResponse
     {
-        try {
-            if (!$appId) {
-                throw new \Exception('Aucun jeu trouvé');
-            }
-
-            $appInfos = $steamClient->getGameInfo($appId)[$appId]['data'];
-
-            return $this->json($appInfos);
-        } catch (\Exception $e) {
-            return $this->json(['code' => 'error', 'message' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
+        if (empty($appId)) {
+            throw new InvalidArgumentException('L\'identifiant du jeu est manquant.');
         }
+
+        $game = $steamClient->getGameInfo($appId)[$appId];
+
+        $responseCode = Response::HTTP_OK;
+
+        if ($game['success']) {
+            $game = $game['data'];
+        } else {
+            $game         = ['code' => 'error', 'message' => 'Le jeu n\'a pas été trouvé.'];
+            $responseCode = Response::HTTP_NOT_FOUND;
+        }
+
+        return $this->json($game, $responseCode);
     }
 
     #[Route('games/infos', name: 'games_infos', options: ['expose' => true])]
     public function gamesInfos(Request $request, SteamClient $steamClient): JsonResponse
     {
-        try {
-            $appsIds = json_decode($request->getContent(), true) ?? null;
+        $datas    = json_decode($request->getContent(), true);
+        $appsIds  = $datas['appsIds']  ?? null;
+        $gamesIds = $datas['gamesIds'] ?? null;
 
-            if (!$appsIds) {
-                throw new \Exception('Aucun jeu trouvé');
-            }
-
-            $games = [];
-            foreach ($appsIds as $appId) {
-                $games[$appId] = $steamClient->getGameInfo($appId)[$appId]['data'];
-            }
-
-            return $this->json($games);
-        } catch (\Exception $e) {
-            return $this->json(['code' => 'error', 'message' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
+        if (!$appsIds) {
+            return $this->json(['code' => 'error', 'message' => 'Aucun jeu trouvé'], Response::HTTP_BAD_REQUEST);
         }
+
+        $games = [];
+        foreach (array_diff($appsIds, $gamesIds ?? []) as $appId) {
+            $game = $steamClient->getGameInfo($appId)[$appId] ?? null;
+
+            if ($game && $game['success']) {
+                $games[$appId] = $game['data'];
+            }
+        }
+
+        return $this->json($games);
     }
 }

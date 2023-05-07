@@ -14,10 +14,10 @@ const ApiService = {
     return axios.post(url, filters)
   },
 
-  getGamesInfos(appsIds) {
+  getGamesInfos(appsIds, gamesIds) {
     let url = Routing.generate('games_infos')
 
-    return axios.post(url, appsIds)
+    return axios.post(url, { appsIds: appsIds, gamesIds: gamesIds })
   }
 }
 

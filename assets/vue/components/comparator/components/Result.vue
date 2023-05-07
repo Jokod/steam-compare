@@ -14,8 +14,7 @@
                 </ul>
             </div>
 
-            <Game v-if="games" v-for="(game,index) in games" :key="index" :game="game"/>
-            <p v-else>Aucun jeux à comparer</p>
+            <Game v-if="gamesToCompare" v-for="(game,index) in gamesToCompare" :key="index" :appId="index" :game="game"/>
         </div>
     </div>
 </template>
@@ -44,7 +43,7 @@ export default {
             this.$store.commit('setInteractive', false);
             this.status = 'loading';
 
-            this.$store.commit('resetGames');
+            this.$store.commit('resetGamesToCompare');
 
             for (const steamId of this.playersToCompare) {
                 const player = this.players.find(p => p.steamId === steamId);
@@ -60,8 +59,6 @@ export default {
                     await new Promise(resolve => setTimeout(resolve, 400));
                 }
             }
-
-            await this.$store.dispatch('getGames');
 
             await this.getGamesInfos();
 
@@ -85,7 +82,7 @@ export default {
         ...mapState({
             players: state => state.players,
             playersToCompare: state => state.playersToCompare,
-            games: state => state.games,
+            gamesToCompare: state => state.gamesToCompare,
         }),
         isLoading() {
             return this.status === 'loading';

@@ -48,9 +48,10 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 img {
     transition: all 0.2s ease-in-out;
+    opacity: 0.6;
 
     &:not(.interactive):hover {
         cursor: pointer;
@@ -58,6 +59,7 @@ img {
     }
 }
 .selected {
+    opacity: 1;
     transform: scale(1.1);
     box-shadow: 0 0 0 0.2rem #fff;
 }

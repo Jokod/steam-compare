@@ -1,6 +1,6 @@
 <template>
     <div v-if="this.isLoading" class="py-2 text-center text-muted">
-        <i class="fa fa-circle-notch fa-spin mr-2 align-middle"></i> Chargement en cours
+        <i class="fa fa-circle-notch fa-spin me-2 align-middle"></i> Chargement en cours
     </div>
 
     <div v-else-if="this.isErrored" class="p-5 text-center text-muted">

@@ -14,7 +14,15 @@
                 </ul>
             </div>
 
-            <Game v-if="gamesToCompare" v-for="(game,index) in gamesToCompare" :key="index" :appId="index" :game="game"/>
+            <div class="game-cards">
+                <Game
+                    v-if="gamesToCompare"
+                    v-for="(game,index) in gamesToCompare"
+                    :key="index"
+                    :appId="index"
+                    :game="game"
+                    />
+            </div>
         </div>
     </div>
 </template>
@@ -100,5 +108,11 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+.game-cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
+}
 </style>

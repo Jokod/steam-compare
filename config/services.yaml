@@ -30,3 +30,7 @@ services:
     App\Service\SteamClient:
         arguments:
             - '%steam_api_key%'
+
+    app_version_service:
+        class: App\Service\Version
+        factory: [App\Service\Version, 'getVersion']

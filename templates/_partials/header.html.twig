@@ -3,7 +3,14 @@
 <header class="header container">
 
     <div class="d-flex align-items-center">
-        <img src="{{ app.user.avatar }}" alt="Avatar of {{ app.user.username }}" class="rounded-circle me-3">
-        <a href="{{ path('logout') }}" title="Logout"><i class="fa-solid fa-right-from-bracket fa-lg"></i></a>
+        <a href="https://github.com/Jokod/steam-compare" target="_blank" title="GitHub Steam Compare"><i class="fab fa-github"></i></a>
     </div>
+
+    {% if app.user %}
+        <div class="d-flex align-items-center">
+            <img src="{{ app.user.avatar }}" alt="Avatar of {{ app.user.username }}" class="rounded-circle me-3">
+            <a href="{{ path('logout') }}" title="Logout"><i class="fa-solid fa-right-from-bracket fa-lg"></i></a>
+        </div>
+    {% endif %}
+
 </header>

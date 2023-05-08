@@ -16,7 +16,7 @@ class User implements UserInterface
     #[ORM\Column(type: 'string', length: 180, unique: true)]
     private $steamId;
 
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(type: 'integer', nullable: true)]
     private $communityVisibilityState;
 
     #[ORM\Column(type: 'integer', nullable: true)]
@@ -25,10 +25,10 @@ class User implements UserInterface
     #[ORM\Column(type: 'string')]
     private $personaName;
 
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(type: 'integer', nullable: true)]
     private $lastLogoff;
 
-    #[ORM\Column(type: 'string')]
+    #[ORM\Column(type: 'string', nullable: true)]
     private $profileUrl;
 
     #[ORM\Column(type: 'string')]
@@ -40,16 +40,16 @@ class User implements UserInterface
     #[ORM\Column(type: 'string')]
     private $avatarFull;
 
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(type: 'integer', nullable: true)]
     private $personaState;
 
-    #[ORM\Column(type: 'string')]
+    #[ORM\Column(type: 'string', nullable: true)]
     private $primaryClanId;
 
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(type: 'integer', nullable: true)]
     private $timeCreated;
 
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(type: 'integer', nullable: true)]
     private $personaStateFlags;
 
     #[ORM\Column(type: 'json')]
@@ -166,7 +166,7 @@ class User implements UserInterface
         return $this->communityVisibilityState;
     }
 
-    public function setCommunityVisibilityState(int $communityVisibilityState): self
+    public function setCommunityVisibilityState(?int $communityVisibilityState): self
     {
         $this->communityVisibilityState = $communityVisibilityState;
 
@@ -185,12 +185,12 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getPersonaName(): ?string
+    public function getPersonaName(): string
     {
         return $this->personaName;
     }
 
-    public function setPersonaName(?string $personaName): self
+    public function setPersonaName(string $personaName): self
     {
         $this->personaName = $personaName;
 
@@ -221,36 +221,36 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getAvatar(): ?string
+    public function getAvatar(): string
     {
         return $this->avatar;
     }
 
-    public function setAvatar(?string $avatar): self
+    public function setAvatar(string $avatar): self
     {
         $this->avatar = $avatar;
 
         return $this;
     }
 
-    public function getAvatarMedium(): ?string
+    public function getAvatarMedium(): string
     {
         return $this->avatarMedium;
     }
 
-    public function setAvatarMedium(?string $avatarMedium): self
+    public function setAvatarMedium(string $avatarMedium): self
     {
         $this->avatarMedium = $avatarMedium;
 
         return $this;
     }
 
-    public function getAvatarFull(): ?string
+    public function getAvatarFull(): string
     {
         return $this->avatarFull;
     }
 
-    public function setAvatarFull(?string $avatarFull): self
+    public function setAvatarFull(string $avatarFull): self
     {
         $this->avatarFull = $avatarFull;
 

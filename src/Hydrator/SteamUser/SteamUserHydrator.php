@@ -22,6 +22,9 @@ class SteamUserHydrator extends AbstractHydrator
         $steamUser->setAvatarMedium($result->getAvatarMedium());
         $steamUser->setAvatarFull($result->getAvatarFull());
         $steamUser->setPersonaState($result->getPersonaState());
+        $steamUser->setPrimaryClanId($result->getPrimaryClanId());
+        $steamUser->setTimeCreated($result->getTimeCreated());
+        $steamUser->setPersonaStateFlags($result->getPersonaStateFlags());
         $steamUser->setPassword('');
         $steamUser->setCreatedAt(new \DateTimeImmutable());
 

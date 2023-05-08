@@ -90,6 +90,11 @@ class User implements UserInterface
         return $this->getPersonaName();
     }
 
+    public function getUserIdentifier()
+    {
+        return $this->getPersonaName();
+    }
+
     /**
      * @see UserInterface
      */

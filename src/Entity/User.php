@@ -190,7 +190,7 @@ class User implements UserInterface
         return $this->personaName;
     }
 
-    public function setPersonaName(string $personaName): self
+    public function setPersonaName(?string $personaName): self
     {
         $this->personaName = $personaName;
 
@@ -202,7 +202,7 @@ class User implements UserInterface
         return $this->lastLogoff;
     }
 
-    public function setLastLogoff(int $lastLogoff): self
+    public function setLastLogoff(?int $lastLogoff): self
     {
         $this->lastLogoff = $lastLogoff;
 
@@ -214,7 +214,7 @@ class User implements UserInterface
         return $this->profileUrl;
     }
 
-    public function setProfileUrl(string $profileUrl): self
+    public function setProfileUrl(?string $profileUrl): self
     {
         $this->profileUrl = $profileUrl;
 
@@ -226,7 +226,7 @@ class User implements UserInterface
         return $this->avatar;
     }
 
-    public function setAvatar(string $avatar): self
+    public function setAvatar(?string $avatar): self
     {
         $this->avatar = $avatar;
 
@@ -238,7 +238,7 @@ class User implements UserInterface
         return $this->avatarMedium;
     }
 
-    public function setAvatarMedium(string $avatarMedium): self
+    public function setAvatarMedium(?string $avatarMedium): self
     {
         $this->avatarMedium = $avatarMedium;
 
@@ -250,7 +250,7 @@ class User implements UserInterface
         return $this->avatarFull;
     }
 
-    public function setAvatarFull(string $avatarFull): self
+    public function setAvatarFull(?string $avatarFull): self
     {
         $this->avatarFull = $avatarFull;
 
@@ -274,7 +274,7 @@ class User implements UserInterface
         return $this->primaryClanId;
     }
 
-    public function setPrimaryClanId(string $primaryClanId): self
+    public function setPrimaryClanId(?string $primaryClanId): self
     {
         $this->primaryClanId = $primaryClanId;
 
@@ -286,7 +286,7 @@ class User implements UserInterface
         return $this->timeCreated;
     }
 
-    public function setTimeCreated(int $timeCreated): self
+    public function setTimeCreated(?int $timeCreated): self
     {
         $this->timeCreated = $timeCreated;
 
@@ -298,7 +298,7 @@ class User implements UserInterface
         return $this->personaStateFlags;
     }
 
-    public function setPersonaStateFlags(int $personaStateFlags): self
+    public function setPersonaStateFlags(?int $personaStateFlags): self
     {
         $this->personaStateFlags = $personaStateFlags;
 

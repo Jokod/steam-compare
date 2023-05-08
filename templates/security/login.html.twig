@@ -2,6 +2,10 @@
 
 {% block title %}Connexion{% endblock %}
 
+{% block header %}
+    {% include '_partials/header.html.twig' %}
+{% endblock %}
+
 {% block container %}
 
     <div class="container text-center">
@@ -9,7 +13,7 @@
             <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
         {% endif %}
 
-        <a href="{{ path('oauth_steam_check') }}">
+        <a href="{{ path('oauth_steam_check') }}" title="Login with Steam">
             <img src="https://steamcommunity-a.akamaihd.net/public/images/signinthroughsteam/sits_large_noborder.png" alt="Connexion à Steam">
         </a>
     </div>

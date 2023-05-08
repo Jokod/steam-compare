@@ -11,7 +11,7 @@
 
     <div v-else-if="this.isLoaded">
         <Friends />
-        <Result />
+        <Result v-if="user.friends"/>
     </div>
 </template>
 

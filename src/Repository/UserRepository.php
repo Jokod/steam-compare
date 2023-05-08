@@ -41,15 +41,33 @@ class UserRepository extends ServiceEntityRepository
         }
     }
 
-    public function findOrCreateUser(SteamUser $steamUser): User
+    public function updateBySteamUser(SteamUser $steamUser, User $user)
+    {
+        $user->setCommunityVisibilityState($steamUser->getCommunityVisibilityState());
+        $user->setProfileState($steamUser->getProfileState());
+        $user->setPersonaName($steamUser->getPersonaName());
+        $user->setLastLogoff($steamUser->getLastLogoff());
+        $user->setProfileUrl($steamUser->getProfileUrl());
+        $user->setAvatar($steamUser->getAvatar());
+        $user->setAvatarMedium($steamUser->getAvatarMedium());
+        $user->setAvatarFull($steamUser->getAvatarFull());
+        $user->setPersonaState($steamUser->getPersonaState());
+        $user->setPrimaryClanId($steamUser->getPrimaryClanId());
+        $user->setTimeCreated($steamUser->getTimeCreated());
+        $user->setPersonaStateFlags($steamUser->getPersonaStateFlags());
+
+        return $user;
+    }
+
+    public function createOrUpdateUser(SteamUser $steamUser): User
     {
         $user = $this->findOneBy(['steamId' => $steamUser->getSteamId()]);
 
-        if (!$user) {
-            $user = $this->hydrator->hydrate($steamUser);
+        $user = (!$user)
+            ? $this->hydrator->hydrate($steamUser)
+            : $this->updateBySteamUser($steamUser, $user);
 
-            $this->add($user, true);
-        }
+        $this->add($user, true);
 
         return $user;
     }

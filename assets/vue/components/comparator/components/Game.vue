@@ -1,21 +1,20 @@
 <template>
-    <div class="game-card">
-
+    <div class="game-container">
         <a :href="launch" class="image-container" :class="{ hover: hoverImage }" @mouseenter="hoverImage = true" @mouseleave="hoverImage = false">
-          <img :src="game.header_image" alt="Game logo" class="game-logo">
+          <img :src="params.game.header_image" alt="Game logo" class="game-logo">
           <div class="overlay" v-if="hoverImage">
             <p class="text-uppercase">Play on Steam</p>
           </div>
         </a>
 
-        <a :href="gameUrl" target="_blank" class="game-title h3">{{ game.name }}</a>
-        <p class="game-description">{{ game.short_description }}</p>
+        <a :href="gameUrl" target="_blank" class="game-title h3">{{ params.game.name }}</a>
+        <p class="game-description">{{ params.game.short_description }}</p>
 
         <div class="game-details">
             <p class="game-plateforms">
-                <span :class="{enabled : game.platforms.windows}" title="Windows"><i class="fa-brands fa-windows fa-lg"></i></span>
-                <span :class="{enabled : game.platforms.mac}" title="Mac"><i class="fa-brands fa-apple fa-lg"></i></span>
-                <span :class="{enabled : game.platforms.linux}" title="Linux"><i class="fa-brands fa-linux fa-lg"></i></span>
+                <span :class="{enabled : params.game.platforms.windows}" title="Windows"><i class="fa-brands fa-windows fa-lg"></i></span>
+                <span :class="{enabled : params.game.platforms.mac}" title="Mac"><i class="fa-brands fa-apple fa-lg"></i></span>
+                <span :class="{enabled : params.game.platforms.linux}" title="Linux"><i class="fa-brands fa-linux fa-lg"></i></span>
             </p>
         </div>
 
@@ -26,14 +25,19 @@
 export default {
     name: 'Game',
     props: {
+      params: {
+        type: Object,
+        required: true,
+
         appId: {
-            type: String,
-            required: true,
+          type: String,
+          required: true,
         },
         game: {
-            type: Object,
-            required: true,
-        },
+          type: Object,
+          required: true,
+        }
+      }
     },
     data() {
         return {
@@ -42,10 +46,10 @@ export default {
     },
     computed: {
         launch() {
-            return `steam://run/${this.appId}`
+            return `steam://run/${this.params.appId}`
         },
         gameUrl() {
-            return `https://store.steampowered.com/app/${this.appId}`
+            return `https://store.steampowered.com/app/${this.params.appId}`
         }
     },
     filters: {
@@ -59,18 +63,11 @@ export default {
 <style lang="scss" scoped>
 @import "../../../../styles/utils/variables";
 
-
-.game-card {
+.game-container {
   display: flex;
   flex-direction: column;
-  width: 300px;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  box-shadow: 0 0px 10px rgba(0, 0, 0, 0.5);
-  color: $white;
+  color: #000;
 }
-
 .image-container {
   z-index: 2;
   position: relative;
@@ -90,8 +87,7 @@ export default {
 
 .game-title {
   font-size: 20px;
-  margin-top: 10px;
-  margin-bottom: 5px;
+  margin: 1.5rem 0;
 }
 
 .game-description {
@@ -110,14 +106,17 @@ export default {
 
 .game-plateforms {
   display: flex;
-  color: #94949467;
 
   i {
     margin-left: .5rem;
   }
 
   & .enabled i {
-    color: #ffffff;
+    color: inherit;
+  }
+
+  & :not(.enabled) i {
+    color: #8a8a8a80;
   }
 }
 

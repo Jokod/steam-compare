@@ -14,13 +14,14 @@
                 </ul>
             </div>
 
+            <Actions v-if="gamesToCompare" />
+
             <div class="game-cards">
-                <Game
+                <Game class="game-card"
                     v-if="gamesToCompare"
                     v-for="(game,index) in gamesToCompare"
                     :key="index"
-                    :appId="index"
-                    :game="game"
+                    :params="paramsGame(game, index)"
                     />
             </div>
         </div>
@@ -31,11 +32,13 @@
 import { mapState } from 'vuex'
 import store from '../store';
 
+import Actions from './Actions';
 import Game from './Game';
 
 export default {
     name: 'Result',
     components: {
+        Actions,
         Game,
     },
     store: store,
@@ -70,14 +73,17 @@ export default {
 
             await this.getGamesInfos();
 
-            this.status = 'compared';
             this.$store.commit('setInteractive', true);
         },
         async getGamesInfos() {
             this.textLoading = `Récupération des données des jeux...`;
 
             await this.$store.dispatch('getGamesInfos')
+                .then(() => {
+                    this.status = 'compared';
+                })
                 .catch((e) => {
+                    this.status = 'loaded';
                     this.$eventBus.$emit('createToast', {
                         title: 'Oups !',
                         message: e.response.data.message,
@@ -92,6 +98,14 @@ export default {
             playersToCompare: state => state.playersToCompare,
             gamesToCompare: state => state.gamesToCompare,
         }),
+        paramsGame() {
+            return (game, index) => {
+                return {
+                    game: game,
+                    appId: index,
+                }
+            }
+        },
         isLoading() {
             return this.status === 'loading';
         },
@@ -114,5 +128,14 @@ export default {
   flex-wrap: wrap;
   justify-content: center;
   gap: 1.5rem;
+}
+
+.game-card {
+  width: 300px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 0 0px 10px rgba(0, 0, 0, 0.5);
+  color: #fff;
 }
 </style>

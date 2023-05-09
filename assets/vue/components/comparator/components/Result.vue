@@ -14,7 +14,7 @@
                 </ul>
             </div>
 
-            <Actions v-if="gamesToCompare.length > 0" />
+            <Actions v-if="Object.keys(gamesToCompare).length" />
 
             <div class="game-cards">
                 <Game class="game-card"

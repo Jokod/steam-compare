@@ -13,6 +13,10 @@ Vue.use(VueDateFns, "d MMMM yyyy", { locale });
 import Toasted from 'vue-toasted';
 Vue.use(Toasted);
 
+import ModalVue from "./components/utils/ModalVue";
+Vue.modal = ModalVue
+Vue.prototype.$modal = ModalVue
+
 const EventBus = new Vue();
 Vue.prototype.$eventBus = EventBus;
 

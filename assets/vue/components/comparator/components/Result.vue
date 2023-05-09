@@ -14,11 +14,10 @@
                 </ul>
             </div>
 
-            <Actions v-if="gamesToCompare" />
+            <Actions v-if="gamesToCompare.length > 0" />
 
             <div class="game-cards">
                 <Game class="game-card"
-                    v-if="gamesToCompare"
                     v-for="(game,index) in gamesToCompare"
                     :key="index"
                     :params="paramsGame(game, index)"

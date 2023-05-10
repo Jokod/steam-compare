@@ -39,7 +39,7 @@ jobs:
       run: /usr/local/php8.1/bin/php ./vendor/bin/phpstan analyse src --memory-limit 1G
   
     - name: Deploy
-      uses: SamKirkland/FTP-Deploy-Action@4.1.1
+      uses: SamKirkland/FTP-Deploy-Action@4.0.0
       with:
         server: ${{ secrets.SERVER }}
         username: ${{ secrets.USERNAME }}

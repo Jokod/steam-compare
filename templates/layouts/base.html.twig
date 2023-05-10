@@ -1,11 +1,25 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="{{ app.request.locale }}">
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}{% endblock %} - Steam Compare</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon"/>
 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="Trouvez facilement les jeux que vous avez en commun avec vos amis grâce à notre comparateur de jeux en ligne. Essayez-le dès maintenant !">
+        <meta name="keywords" content="jeux, comparateur, amis, commun">
+        <meta name="robots" content="index, follow">
+        <link rel="canonical" href="https://steam-compare.com/">
+        <link rel="alternate" hreflang="fr" href="https://steam-compare.com/">
+
+        <meta property="og:title" content="Comparateur de jeux en commun avec vos amis - Nom de votre site">
+        <meta property="og:description" content="Trouvez facilement les jeux que vous avez en commun avec vos amis grâce à notre comparateur de jeux en ligne. Essayez-le dès maintenant !">
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="https://steam-compare.com/">
+        <meta property="og:image" content="{{ asset('build/images/logo_steam_compare.png')}}">
+        <meta property="og:image:width" content="503">
+        <meta property="og:image:height" content="496">
+
+        <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon"/>
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;700&display=swap" rel="stylesheet">

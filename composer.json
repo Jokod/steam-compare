@@ -1,6 +1,7 @@
 {
     "type": "project",
     "name": "jokod/steam-compare",
+    "description": "Steam Compare",
     "license": "proprietary",
     "minimum-stability": "stable",
     "prefer-stable": true,

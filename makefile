@@ -9,7 +9,7 @@
 YARN          = yarn
 SYMFONY       = symfony
 PHP           = $(SYMFONY) php
-COMPOSER      = $(SYMFONY) composer
+COMPOSER      = composer
 CONSOLE       = $(SYMFONY) console
 DOCKER		  = docker
 

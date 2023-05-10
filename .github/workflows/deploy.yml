@@ -15,29 +15,78 @@ jobs:
       fail-fast: true
       matrix:
         php-version: [8.1]
+        node-version: [16]
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
+      # —— Setup Github actions 🐙 —————————————————————————————————————————————
+      # https://github.com/actions/checkout (official)
+      - name: Checkout
+        uses: actions/checkout@v2
 
-    - name: Check PHP Version
-      run: php -v
+      # https://github.com/shivammathur/setup-php (community)
+      - name: Setup PHP, extensions and composer with shivammathur/setup-php
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+          extensions: mbstring, xml, ctype, iconv, intl, pdo, pdo_mysql, dom, filter, gd, iconv, json, mbstring, pdo
+        env:
+          update: true
 
-    - name: Check the Symfony console
-      run: /usr/local/php8.1/bin/php bin/console about
+      - name: Check PHP Version
+        run: php -v
 
-    - name: Clear cache
-      run: /usr/local/php8.1/bin/php bin/console cache:clear
+      ## —— NPM 🐱 ————————————————————————————————————————————————————————————
+      - name: Checkout
+        uses: actions/checkout@master
 
-    - name: Cache warmup
-      run: /usr/local/php8.1/bin/php bin/console cache:warmup
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@master
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Upgrade NPM
+        run: npm install -g npm
+      - name: NPM install build
+        run: |
+          npm ci
+          npm run build --if-present
+          npm t
+
+      # —— Composer 🧙‍️ —————————————————————————————————————————————————————————
+      - name: Validate composer.json and composer.lock
+        run: composer validate
+
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: Cache composer dependencies
+        uses: actions/cache@v1
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install Composer dependencies
+        run: make composer-install
+
+      # —— Symfony 🎵 ——————————————————————————————————————————————————————————
+#      - name: Check Symfony requirements
+#        run: vendor/bin/requirements-checker
+
+      - name: Check the Symfony console
+        run: bin/console about
+
+      - name: Check the Symfony console
+        run: /usr/bin/php8.1 bin/console about
+
+      ## —— Coding standards ✨ ————————————————————————————————————————————————
 
     - name: Coding standards checks (php_codesniffer + php-cs-fixer)
-      run: /usr/local/php8.1/bin/php ./vendor/bin/php-cs-fixer fix --allow-risky=yes --dry-run
+      run: /usr/bin/php8.1 ./vendor/bin/php-cs-fixer fix --allow-risky=yes --dry-run
 
     - name: Static analysis of PHP code (PHPStan)
-      run: /usr/local/php8.1/bin/php ./vendor/bin/phpstan analyse src --memory-limit 1G
-  
+      run: /usr/bin/php8.1 ./vendor/bin/phpstan analyse src --memory-limit 1G
+
     - name: Deploy
       uses: SamKirkland/FTP-Deploy-Action@4.0.0
       with:

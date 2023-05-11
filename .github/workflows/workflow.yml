@@ -91,8 +91,10 @@ jobs:
 
   deploy:
     name: Deploy
-    needs: [build]
+    needs: build
     runs-on: ubuntu-22.04
+    strategy:
+          fail-fast: true
     if: github.ref == 'refs/heads/main'
     steps:
       - name: Checkout
@@ -106,6 +108,7 @@ jobs:
           local-dir: ./
           server-dir: /www/steam/
           exclude: |
-            .git
-            node_modules
-            var
+            **/.git/**
+            **/node_modules/**
+            **/var/**
+

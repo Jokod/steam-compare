@@ -109,3 +109,7 @@ jobs:
             .git
             node_modules
             var
+      - name: Clear cache
+        run: /usr/local/php8.1/bin/php bin/console cache:clear
+      - name: Cache warmup
+        run: /usr/local/php8.1/bin/php bin/console cache:warmup

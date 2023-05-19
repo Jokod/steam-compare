@@ -85,6 +85,12 @@ cc: ## Clear the cache. DID YOU CLEAR YOUR CACHE????
 permissions: ## Fix permissions of all var files
 	chmod -R 777 var/*
 
+db-test: ## Create test database
+	APP_ENV=test $(CONSOLE) doctrine:database:drop -f --if-exists
+	APP_ENV=test $(CONSOLE) doctrine:database:create
+	APP_ENV=test $(CONSOLE) doctrine:schema:create -q
+	APP_ENV=test $(CONSOLE) doctrine:fixtures:load -n
+
 fixtures: ## Load fixtures in your BDD
 	$(CONSOLE) doctrine:database:drop --force
 	$(CONSOLE) doctrine:database:create
@@ -106,6 +112,15 @@ lint: ## Lint files with php-cs-fixer
 
 fix: ## Fix files with php-cs-fixer
 	$(PHP_CS_FIXER) fix
+
+test: ## Run the tests with phpunit
+	$(PHP) bin/phpunit
+
+test-dox: ## Run the tests with phpunit in testdox format
+	$(PHP) bin/phpunit --testdox
+
+test-coverage: ## Get coverage tests
+	$(PHP) -dxdebug.mode=coverage bin/phpunit --coverage-html var/log/test/coverage
 
 ## —— Yarn 🐱 / JavaScript —————————————————————————————————————————————————————
 js-install:

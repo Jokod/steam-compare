@@ -90,6 +90,9 @@ class User implements UserInterface
         return $this->getPersonaName();
     }
 
+    /**
+     * @return string[]
+     */
     public function getUserIdentifier()
     {
         return $this->getPersonaName();
@@ -143,7 +146,7 @@ class User implements UserInterface
     /**
      * @see UserInterface
      */
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;

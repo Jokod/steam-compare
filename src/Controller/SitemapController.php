@@ -18,8 +18,6 @@ class SitemapController extends AbstractController
 
         $urls[] = ['loc' => $this->generateUrl('dashboard'), 'priority' => '1.00'];
         $urls[] = ['loc' => $this->generateUrl('login')];
-        // $urls[] = ['loc' => $this->generateUrl('about')];
-        // $urls[] = ['loc' => $this->generateUrl('confidentiality')];
 
         $response = new Response(
             $this->renderView('pages/sitemap.html.twig', [
